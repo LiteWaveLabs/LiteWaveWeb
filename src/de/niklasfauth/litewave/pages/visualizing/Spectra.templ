@@ -1,0 +1,61 @@
+<div id="avail" style="min-width: 310px; height: 600px; max-width: 100%; margin: 0 auto"></div>
+<script>
+$(function () {
+    $('#avail').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Emissionsspektrum'
+        },
+        subtitle: {
+            text: '<?=$title?>'
+        },
+        xAxis: {
+            categories: <?=$!wavelenght?>,
+            tickmarkPlacement: 'on',
+            minTickInterval: 50,
+            title: {
+                enabled: false
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Intensität'
+            }
+        },
+        tooltip: {
+        	
+        		<?=$!peakList?>
+        },
+        series: [{
+        	color: '#0000FF',
+            name: 'Intensität',
+            dataGrouping:{
+                enabled:false
+            },
+            enableMouseTracking: false,
+            marker: {
+     
+                    enabled: false
+                },
+            data: <?=$!raw?>,
+            lineWidth: 1
+        },
+        {
+        	color: '#FF0000',
+            name: 'Peak',
+            dataGrouping:{
+                enabled:false
+            },
+            marker: {
+     
+                    enabled: true
+                },
+            data: <?=$!peak?>,
+            lineWidth: 1,
+            turboThreshold: 2000
+        }]
+    });
+});
+</script>

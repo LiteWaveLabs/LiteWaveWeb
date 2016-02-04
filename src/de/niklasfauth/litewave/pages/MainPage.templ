@@ -1,0 +1,28 @@
+
+<div class="overlay">
+<form onsubmit="return possub()">
+<div class="input-group">
+  <span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></span>
+  <input type="text" class="form-control" placeholder="City name, postal code, ..." aria-describedby="basic-addon1" id="query">
+  <div class="input-group-btn">
+<input type="submit" class="btn btn-default" value="Search"/>
+</div>
+
+</div>
+</form>
+<div class="text-left">
+<br>
+<p>This text is normal.</p>
+</div>
+</div>
+<script>
+$(function(){
+	$.get( "test", function( data ) {
+	$( ".result" ).html( data );
+	alert( data );
+	});
+	});
+</script>
+<div id="map" class="half"></div>
+
+

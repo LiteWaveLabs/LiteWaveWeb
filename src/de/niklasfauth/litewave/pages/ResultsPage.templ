@@ -1,0 +1,32 @@
+<div class="container">
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+
+<?=$availibility?>
+
+<form method='POST'>
+<div class="container">
+<div class="jumbotron">
+  <h1>Auswertung</h1>
+  <table class="table"><tr>
+  <td>Suchoffset:</td><td><input type="number" step="1" name="offset"  value="400"/></td></tr>
+  <tr>
+  <td>Max. Offset:</td><td><input type="number" step="0.01" name="maxoffset"  value="0.3"/></td></tr>
+   <tr>
+  <td>Elemente pro Peak:</td><td><input type="number" step="1" name="elepeak"  value="3"/></td></tr>
+
+</table>
+  <p><input type="submit" class="btn btn-primary btn-lg" href="/stats" role="button" value="Auswerten"></p>
+</div>
+</div>
+</form>
+
+<div class="container">
+<div class="jumbotron">
+<?=$!resultSet?>
+</div>
+</div>
+
+<?=$apiavail?>
+</div>
+
