@@ -5,11 +5,13 @@ public class PeakLabel implements Serializable {
 	private int intensity;
 	private String element;
 	private double wavelength;
+	private long probability;
 
-	public PeakLabel(int intensity, String element, double wavelength) {
+	public PeakLabel(int intensity, String element, double wavelength, long probability) {
 		this.intensity = intensity;
 		this.element = element;
 		this.wavelength = wavelength;
+		this.probability = probability;
 	}
 
 	public int getIntensity() {
@@ -22,5 +24,9 @@ public class PeakLabel implements Serializable {
 	
 	public double getWavelength() {
 		return wavelength;
+	}
+	
+	public long getProbability() {
+		return probability;
 	}
 }

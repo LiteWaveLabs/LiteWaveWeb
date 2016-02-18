@@ -1,19 +1,15 @@
 package me.streib.janis.dbaufzug.pages.statistics;
 
 import java.io.PrintWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Map;
 
 import de.niklasfauth.litewave.pages.visualizing.StatisticOutputable;
-import me.streib.janis.dbaufzug.DatabaseConnection;
 
 public class APIAvailibility extends StatisticOutputable {
 
 	@Override
 	public void output(PrintWriter out, Map<String, Object> vars) {
-		try {
+		/*try {
 			PreparedStatement prep = DatabaseConnection.getInstance().prepare(
 					"SELECT COUNT(DISTINCT station) FROM facilities");
 			ResultSet res = prep.executeQuery();
@@ -32,6 +28,6 @@ public class APIAvailibility extends StatisticOutputable {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 }

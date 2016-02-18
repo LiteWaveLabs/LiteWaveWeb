@@ -13,6 +13,7 @@ public class Analyze implements Runnable {
 		double threshold = SpectraPlotValues.getConfig()[0];
 		double maxOffset = SpectraPlotValues.getConfig()[1];
 		int elementsPerPeak = (int) SpectraPlotValues.getConfig()[2];
+		int orderBy = (int) SpectraPlotValues.getConfig()[3];
 
 		LinkedList<Double> valueX = SpectraPlotValues.getRawPlot()[0];
 		LinkedList<Double> valueY = SpectraPlotValues.getRawPlot()[1];
@@ -38,15 +39,17 @@ public class Analyze implements Runnable {
 
 				double wavelenght = valueX.get(value);
 				System.out.println(wavelenght);
-				result += "<p>" + wavelenght + "nm</p>";
+				result += "<p>" + String.format("%.4f", wavelenght) + "nm</p><ul>";
 				ArrayList<PeakLabel> label = ElementFinder.mySQLHandler(
-						wavelenght, elementsPerPeak, maxOffset);
+						wavelenght, elementsPerPeak, maxOffset, orderBy);
 
 				for (int i = 0; i < label.size(); i++) {
-					result += "<p>" + (i + 1) + ". Element: "
-							+ label.get(i).getElement() + "    Intensität: "
-							+ label.get(i).getIntensity() + "    Wellenlänge: "
-							+ label.get(i).getWavelength() + "nm</p>";
+					result += "<li>" + (i + 1) + ". Element: "
+							+ label.get(i).getElement() 
+							+ "<ul>"
+							+ "<li>Wellenlänge: "+ String.format("%.2f", label.get(i).getWavelength()) + "nm"
+							+ "<li>Intensität: " + label.get(i).getIntensity() 
+							+ "<li>Wahrscheinlichkeit: "+ label.get(i).getProbability() + " s<sup>-1</sup> </ul>";
 					if (i == 0) {
 						peakList += "if (this.key=='peak"
 								+ peakCounter
@@ -64,7 +67,7 @@ public class Analyze implements Runnable {
 						peakList += "'}\n";
 					}
 				}
-				result += "<br>";
+				result += "</ul><br>";
 			} else {
 				peakResult += null + ",";
 			}

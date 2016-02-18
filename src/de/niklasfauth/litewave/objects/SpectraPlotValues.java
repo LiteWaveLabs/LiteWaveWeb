@@ -3,8 +3,6 @@ package de.niklasfauth.litewave.objects;
 import java.io.Serializable;
 import java.util.LinkedList;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 public class SpectraPlotValues implements Serializable {
 	private static LinkedList<Double> wavelength;
 	private static LinkedList<Double> rawValues;
@@ -15,7 +13,8 @@ public class SpectraPlotValues implements Serializable {
 	private static float offset;
 	private static float maxOffset;
 	private static float perPeak;
-
+	private static float orderBy;
+	
 	private static String resultString = "";
 
 	private static String peakResultString = "[]";
@@ -50,10 +49,11 @@ public class SpectraPlotValues implements Serializable {
 	}
 
 	public static float[] getConfig() {
-		float config[] = { 0, 0, 0 };
+		float config[] = { 0, 0, 0, 0 };
 		config[0] = offset;
 		config[1] = maxOffset;
 		config[2] = perPeak;
+		config[3] = orderBy;
 		return config;
 	}
 
@@ -73,11 +73,11 @@ public class SpectraPlotValues implements Serializable {
 	}
 
 	public static void setConfig(float offsetIn, float maxOffsetIn,
-			float perPeakIn) {
+			float perPeakIn, float i) {
 		offset = offsetIn;
 		perPeak = perPeakIn;
 		maxOffset = maxOffsetIn;
-
+		orderBy = i;
 	}
 
 	public static void setResultString(String string) {

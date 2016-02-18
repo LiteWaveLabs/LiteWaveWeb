@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -57,7 +56,7 @@ public class ResultsPage extends Page {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp,
 			Map<String, Object> vars) throws IOException{
 		
-		SpectraPlotValues.setConfig(Float.parseFloat(req.getParameter("offset")), Float.parseFloat(req.getParameter("maxoffset")), Integer.parseInt(req.getParameter("elepeak")));
+		SpectraPlotValues.setConfig(Float.parseFloat(req.getParameter("offset")), Float.parseFloat(req.getParameter("maxoffset")), Integer.parseInt(req.getParameter("elepeak")), Integer.parseInt(req.getParameter("optradio")));
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		try {

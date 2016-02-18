@@ -1,18 +1,8 @@
 package de.niklasfauth.litewave.pages.visualizing;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Map;
-
-import me.streib.janis.dbaufzug.DatabaseConnection;
 
 import org.json.JSONArray;
 

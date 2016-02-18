@@ -14,6 +14,9 @@
   <td>Max. Offset:</td><td><input type="number" step="0.01" name="maxoffset"  value="0.3"/></td></tr>
    <tr>
   <td>Elemente pro Peak:</td><td><input type="number" step="1" name="elepeak"  value="3"/></td></tr>
+  
+  <tr>
+  <td>Sortierung:</td><td><label class="radio-inline"><input type="radio" name="optradio" value="1" checked="1">Rel. Intensität</label> <label class="radio-inline"><input type="radio" value="2" name="optradio">Wahrscheinlichtkeit</label></td></tr>
 
 </table>
   <p><input type="submit" class="btn btn-primary btn-lg" href="/stats" role="button" value="Auswerten"></p>
@@ -26,7 +29,6 @@
 <?=$!resultSet?>
 </div>
 </div>
-
-<?=$apiavail?>
 </div>
-
+<hr/>
+<p class="grey">Mit Liebe gemacht <3</p>

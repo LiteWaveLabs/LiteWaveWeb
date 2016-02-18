@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -14,8 +19,10 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
+import de.niklasfauth.litewave.DatabaseConnection;
 import de.niklasfauth.litewave.LiteWaveMain;
 import de.niklasfauth.litewave.LiteWaveWebConfigurator;
+import de.niklasfauth.litewave.measure.InitSpectrometer;
 
 public class Launcher {
 	public static void main(String[] args) throws Exception {
@@ -32,7 +39,9 @@ public class Launcher {
 					args[0])));
 		}
 		
+
 		DatabaseConnection.init(conf);
+		
 		Server s = new Server(new InetSocketAddress(conf.getHostName(),
 				conf.getPort()));
 		System.out.println("start Server");
@@ -45,6 +54,19 @@ public class Launcher {
 		hl.setHandlers(new Handler[] { generateStaticContext(), h });
 		s.setHandler(hl);
 		s.start();
+		
+		//For intel systems (OmniDriver Initialization
+		/*
+		
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		try {
+			executor.submit(new InitSpectrometer()).get(1800, TimeUnit.SECONDS);
+		} catch (InterruptedException | ExecutionException | TimeoutException e1) {
+			System.out.println("Timeout: USB driver not Initialized");
+			e1.printStackTrace();
+		} // Timeout of 10 minutes.
+		executor.shutdown(); */
+		
 	}
 
 	private static Handler generateStaticContext() {

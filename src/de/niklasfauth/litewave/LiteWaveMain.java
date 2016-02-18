@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ import org.json.JSONException;
 import de.niklasfauth.litewave.pages.MainPage;
 import de.niklasfauth.litewave.pages.MeasurePage;
 import de.niklasfauth.litewave.pages.ResultsPage;
-import de.niklasfauth.litewave.pages.TestPage;
+import de.niklasfauth.litewave.pages.EastereggPage;
 
 public class LiteWaveMain extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,7 +34,7 @@ public class LiteWaveMain extends HttpServlet {
 		super.init();
 		mainTemplate = new Template(
 				LiteWaveMain.class.getResource("liteWave.templ"));
-		mapping.put("/api", new TestPage());
+		mapping.put("/1337", new EastereggPage());
 		try {
 			mapping.put("/settings", new MeasurePage());
 		} catch (IOException e1) {

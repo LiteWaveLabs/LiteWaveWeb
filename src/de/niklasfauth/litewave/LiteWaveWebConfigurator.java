@@ -29,6 +29,7 @@ public class LiteWaveWebConfigurator {
 		return p.getProperty("litewave.name");
 	}
 
+
 	public String getDB() {
 		return p.getProperty("litewave.db");
 	}
