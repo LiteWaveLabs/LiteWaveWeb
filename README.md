@@ -1,4 +1,8 @@
 
+## Example implementation
+
+http://litewave.electronics.fail
+
 This is the Web App for the LiteWave Jugend forscht project.
 The Code is based on Janis Streibs db-aufzug project (https://github.com/janisstreib/db-aufzug).
 Especially the servlet framework is used by me. 
