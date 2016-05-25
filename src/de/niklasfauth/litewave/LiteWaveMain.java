@@ -18,10 +18,15 @@ import org.cacert.gigi.output.template.Outputable;
 import org.cacert.gigi.output.template.Template;
 import org.json.JSONException;
 
+import de.niklasfauth.litewave.pages.ByePage;
+import de.niklasfauth.litewave.pages.ChargePage;
 import de.niklasfauth.litewave.pages.MainPage;
 import de.niklasfauth.litewave.pages.MeasurePage;
 import de.niklasfauth.litewave.pages.ResultsPage;
 import de.niklasfauth.litewave.pages.EastereggPage;
+import de.niklasfauth.litewave.pages.ReversePage;
+import de.niklasfauth.litewave.pages.ShutdownPage;
+import de.niklasfauth.litewave.pages.StatusPage;
 
 public class LiteWaveMain extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -35,6 +40,10 @@ public class LiteWaveMain extends HttpServlet {
 		mainTemplate = new Template(
 				LiteWaveMain.class.getResource("liteWave.templ"));
 		mapping.put("/1337", new EastereggPage());
+		mapping.put("/charge", new ChargePage());
+		mapping.put("/shutdown", new ShutdownPage());
+		mapping.put("/bye", new ByePage());
+		mapping.put("/status", new StatusPage());
 		try {
 			mapping.put("/settings", new MeasurePage());
 		} catch (IOException e1) {
@@ -46,6 +55,12 @@ public class LiteWaveMain extends HttpServlet {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			try {
+				mapping.put("/reverse", new ReversePage());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 	
 		//mapping.put("/accessibility", new Accessibility());

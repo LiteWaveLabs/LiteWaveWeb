@@ -6,9 +6,10 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
+import de.niklasfauth.litewave.objects.ConcSpectraPlotValues;
 import de.niklasfauth.litewave.objects.SpectraPlotValues;
 
-public class ElementSpectra extends StatisticOutputable {
+public class ConcSpectra extends StatisticOutputable {
 
 	public void output(PrintWriter out, Map<String, Object> vars) {
 		LinkedList<Object> valueX = SpectraPlotValues.getRawPlot()[0];
@@ -19,10 +20,10 @@ public class ElementSpectra extends StatisticOutputable {
 		JSONArray wavelenght = new JSONArray(valueX);
 		JSONArray rawValue = new JSONArray(valueY);
 
-		vars.put("peakList", SpectraPlotValues.getPeakList());
+		vars.put("peakList", ConcSpectraPlotValues.getPeakList());
 		vars.put("wavelenght", wavelenght.toString());
 		vars.put("raw", rawValue.toString());
-		vars.put("peak", SpectraPlotValues.getPeakPlot());
+		vars.put("peak", ConcSpectraPlotValues.getPeakPlot());
 		vars.put("title", "Messung 1");
 		getDefaultTemplate().output(out, vars);
 	}

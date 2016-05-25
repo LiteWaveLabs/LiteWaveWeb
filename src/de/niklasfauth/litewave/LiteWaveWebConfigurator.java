@@ -29,12 +29,12 @@ public class LiteWaveWebConfigurator {
 		return p.getProperty("litewave.name");
 	}
 
-
 	public String getDB() {
 		return p.getProperty("litewave.db");
 	}
 
 	public String getDBUser() {
+		System.out.println( p.getProperty("litewave.db.user"));
 		return p.getProperty("litewave.db.user");
 	}
 

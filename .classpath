@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Ocean"/>
+	<classpathentry kind="lib" path="lib/jetty-http-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-io-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-security-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-server-9.2.1.v20140609.jar" sourcepath="C:/Users/Niklas/.m2/repository/org/eclipse/jetty/jetty-server/9.2.1.v20140609/jetty-server-9.2.1.v20140609-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-servlet-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-util-9.2.1.v20140609.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.31-bin.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/pi4j-core.jar"/>
+	<classpathentry kind="lib" path="lib/pi4j-device.jar"/>
+	<classpathentry kind="lib" path="lib/pi4j-gpio-extension.jar"/>
+	<classpathentry kind="lib" path="lib/pi4j-service.jar"/>
+	<classpathentry kind="lib" path="lib/RXTXcomm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Windows/System32"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/json-20160212.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -28,28 +28,57 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
+          
           <a href="/" class="navbar-brand">LiteWave Analysis</a>
         </div>
         <div class="navbar-collapse collapse" id="navbar">
+        
           <ul class="nav navbar-nav">
              <li 
              <? if($Messung) {?>
             class="active"
             <? } ?>><a href="/settings">Messung</a></li>
+            <li><a>Auswertung:</a></li>
             <li 
-             <? if($Auswertung) {?>
+             <? if($Elemente) {?>
             class="active"
-            <? } ?>><a href="/stats">Auswertung</a></li>
+            <? } ?>><a href="/stats">Elemente</a></li>
+            <li 
+             <? if($Konzentration) {?>
+            class="active"
+            <? } ?>><a href="/reverse">Konzentration</a></li>
             </ul>
+            
             <ul class="nav navbar-nav navbar-right">
+             
+             <li>
+           <a id="results"></a>        </li>
            <li>
            <a href="https://github.com/LiteWaveLabs"><img width="18px" height="auto" src="/static/img/icon-circlegithub.png" alt="LiteWave auf GitHub"/></a>
+           </li>
+           <li>
+           <a href="/shutdown"><img width="18px" height="auto" src="/static/img/power.png" alt="Shutdown Options"/></a>
            </li>
            </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
      <script src="/static/js/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            setInterval(function(){
+                $.ajax({
+                    url: "status",
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        $('#results').html(json.bat + "V");
+                    }
+                });
+            },1000);
+        });
+    </script>
 	<?=$content?>
 	
 	

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -16,13 +17,18 @@ import org.eclipse.jetty.server.SessionManager;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
 
 import de.niklasfauth.litewave.DatabaseConnection;
 import de.niklasfauth.litewave.LiteWaveMain;
 import de.niklasfauth.litewave.LiteWaveWebConfigurator;
 import de.niklasfauth.litewave.measure.InitSpectrometer;
+import de.niklasfauth.litewave.utils.HardwareInterface;
+import de.niklasfauth.litewave.utils.JSONupdater;
+import de.niklasfauth.litewave.utils.QueueSharer;
 
 public class Launcher {
 	public static void main(String[] args) throws Exception {
@@ -50,13 +56,32 @@ public class Launcher {
 				ServletContextHandler.SESSIONS);
 		h.setInitParameter(SessionManager.__SessionCookieProperty, "DB-Session");
 		h.addServlet(LiteWaveMain.class, "/*");
+		
+		 // add special pathspec of "/home/" content mapped to the homePath
+        ServletHolder holderHome = new ServletHolder("static-home", DefaultServlet.class);
+        holderHome.setInitParameter("resourceBase","data");
+        holderHome.setInitParameter("dirAllowed","true");
+        holderHome.setInitParameter("pathInfoOnly","true");
+        h.addServlet(holderHome,"/data/*");
+		
 		HandlerList hl = new HandlerList();
 		hl.setHandlers(new Handler[] { generateStaticContext(), h });
 		s.setHandler(hl);
 		s.start();
+	       
+	    
+	    
+	    LinkedBlockingQueue queue = new LinkedBlockingQueue(10);
+	    new QueueSharer(queue);
+	    JSONupdater producer = new JSONupdater(QueueSharer.getQueue());
+        HardwareInterface obsConsumer = new HardwareInterface(QueueSharer.getQueue());
 		
+        Thread producerThread = new Thread(producer);
+        Thread consumerThread = new Thread(obsConsumer);
+        consumerThread.start();
+	    producerThread.start();
 		//For intel systems (OmniDriver Initialization
-		/*
+		
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		try {
@@ -65,7 +90,7 @@ public class Launcher {
 			System.out.println("Timeout: USB driver not Initialized");
 			e1.printStackTrace();
 		} // Timeout of 10 minutes.
-		executor.shutdown(); */
+		executor.shutdown(); 
 		
 	}
 

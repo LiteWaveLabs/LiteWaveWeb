@@ -14,6 +14,7 @@ public class Analyze implements Runnable {
 		double maxOffset = SpectraPlotValues.getConfig()[1];
 		int elementsPerPeak = (int) SpectraPlotValues.getConfig()[2];
 		int orderBy = (int) SpectraPlotValues.getConfig()[3];
+		float coefficient = SpectraPlotValues.getConfig()[4];
 
 		LinkedList<Double> valueX = SpectraPlotValues.getRawPlot()[0];
 		LinkedList<Double> valueY = SpectraPlotValues.getRawPlot()[1];
@@ -41,7 +42,7 @@ public class Analyze implements Runnable {
 				System.out.println(wavelenght);
 				result += "<p>" + String.format("%.4f", wavelenght) + "nm</p><ul>";
 				ArrayList<PeakLabel> label = ElementFinder.mySQLHandler(
-						wavelenght, elementsPerPeak, maxOffset, orderBy);
+						wavelenght, elementsPerPeak, maxOffset, orderBy, coefficient);
 
 				for (int i = 0; i < label.size(); i++) {
 					result += "<li>" + (i + 1) + ". Element: "
@@ -56,8 +57,7 @@ public class Analyze implements Runnable {
 								+ "'){tooltip = 'Peak "
 								+ peakCounter
 								+ ": "
-								+ String.format("%.2f", label.get(i)
-										.getWavelength()) + "nm<br>";
+								+ String.format("%.2f", wavelenght) + "nm<br>";
 
 					}
 					peakList += "<b>" + (i + 1) + ": "

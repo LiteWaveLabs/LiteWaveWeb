@@ -16,6 +16,7 @@ import com.pi4j.io.gpio.RaspiPin;
 
 import de.niklasfauth.litewave.objects.SpectraPlotValues;
 import de.niklasfauth.litewave.objects.SpectrometerSettings;
+import de.niklasfauth.litewave.utils.JSONupdater;
 
 public class Measure implements Runnable {
 	@Override
@@ -26,105 +27,57 @@ public class Measure implements Runnable {
 		int avgCt = SpectrometerSettings.getSpectrometerSettings()[0];
 		int integrationTime = SpectrometerSettings.getSpectrometerSettings()[1];
 
-		final GpioController gpio = GpioFactory.getInstance();
-
-		final GpioPinDigitalOutput pinHV = gpio.provisionDigitalOutputPin(
-				RaspiPin.GPIO_06, "High voltage", PinState.LOW);
-		final GpioPinDigitalOutput pinUS = gpio.provisionDigitalOutputPin(
-				RaspiPin.GPIO_11, "Ultrasonic", PinState.LOW);
-
-		pinHV.setShutdownOptions(true, PinState.LOW);
-		pinUS.setShutdownOptions(true, PinState.LOW);
-
-		pinUS.high();
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		pinHV.high(); 
-
-		try {
-			Thread.sleep(2500);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		String execute = "cd data; ../data-collection --step 1:"
-				+ integrationTime + ":" + avgCt;
-
-		Process p;
-		try {
-			p = Runtime.getRuntime().exec(
-					new String[] { "bash", "-c", execute });
-			p.waitFor();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					p.getInputStream()));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e);
-		}
-
-		try {
-			CSVParser.parse();
-		} catch (IOException e) { // TODO
-
-			e.printStackTrace();
-		}
-		pinUS.low();
-		pinHV.low();
-		gpio.shutdown();
-		gpio.unprovisionPin(pinHV);
-		gpio.unprovisionPin(pinUS);
-
 		// For intel based architectures OmniDriver should be used:
 
-		/*
-		 * int avgCt = SpectrometerSettings.getSpectrometerSettings()[0]; int
-		 * integrationTime = SpectrometerSettings.getSpectrometerSettings()[1];
-		 * // set the integration time
-		 * 
-		 * System.out.println("Anzahl Messungen: " + avgCt);
-		 * System.out.println("Integrationszeit: " + integrationTime);
-		 * 
-		 * LinkedList<Double> wavelengthsList = new LinkedList<Double>();
-		 * LinkedList<Double> spectralDataList = new LinkedList<Double>();
-		 * double[] wavelengths, spectralData; // arrays of doubles to hold the
-		 * 
-		 * Wrapper wrapper = SpectrometerSettings.getSpectrometerWrapper(); int
-		 * numberOfPixels; BoardTemperature boardTemperature; double
-		 * temperatureCelsius; boardTemperature =
-		 * wrapper.getFeatureControllerBoardTemperature(0); try {
-		 * temperatureCelsius = boardTemperature.getBoardTemperatureCelsius();
-		 * System.out.println("board temperature = " + temperatureCelsius); }
-		 * catch (IOException ioException) { System.out .println(
-		 * "The following exception occurred while attempting to obtain the board temperature"
-		 * ); System.out.println(ioException); }
-		 * 
-		 * // get a spectrum from the spectrometers:
-		 * wrapper.setIntegrationTime(0, integrationTime);
-		 * wrapper.setScansToAverage(0, avgCt);
-		 * wrapper.setCorrectForElectricalDark(0, 0);
-		 * 
-		 * wavelengths = wrapper.getWavelengths(0); spectralData =
-		 * wrapper.getSpectrum(0);
-		 * 
-		 * numberOfPixels = wrapper.getNumberOfPixels(0); // gets the number of
-		 * // pixels in the first // spectrometer.
-		 * 
-		 * // loop for printing the spectral data to the screen: for (int i = 0;
-		 * i < numberOfPixels; i++) { wavelengthsList.add(wavelengths[i]);
-		 * spectralDataList.add(spectralData[i]); }
-		 * 
-		 * SpectraPlotValues.setRawPlot(wavelengthsList, spectralDataList);
-		 */
+		// set the integration time
+
+		System.out.println("Anzahl Messungen: " + avgCt);
+		System.out.println("Integrationszeit: " + integrationTime);
+
+		LinkedList<Double> wavelengthsList = new LinkedList<Double>();
+		LinkedList<Double> spectralDataList = new LinkedList<Double>();
+		double[] wavelengths, spectralData; // arrays of doubles to hold the
+
+		Wrapper wrapper = SpectrometerSettings.getSpectrometerWrapper();
+		int numberOfPixels = 0;
+		BoardTemperature boardTemperature;
+		double temperatureCelsius;
+		boardTemperature = wrapper.getFeatureControllerBoardTemperature(0);
+		try {
+			temperatureCelsius = boardTemperature.getBoardTemperatureCelsius();
+			System.out.println("board temperature = " + temperatureCelsius);
+		} catch (IOException ioException) {
+			System.out
+					.println("The following exception occurred while attempting to obtain the board temperature");
+			System.out.println(ioException);
+		}
+		
+		numberOfPixels = wrapper.getNumberOfPixels(0);
+
+		System.out.println("number of pixels = " + numberOfPixels);
+		// get a spectrum from the spectrometers:
+		wrapper.setIntegrationTime(0, integrationTime);
+		wrapper.setScansToAverage(0, avgCt);
+		wrapper.setCorrectForElectricalDark(0, 0);
+		wrapper.setStrobeEnable(0,1);
+		wrapper.setExternalTriggerMode(0,1);
+		
+		System.out.println("starte spektrometer");
+		wavelengths = wrapper.getWavelengths(0);
+		
+		System.out.println("mitte spektrometer");
+		spectralData = wrapper.getSpectrum(0);
+
+		System.out.println("stoppe spektrometer");
+		 // gets the number of
+		// pixels in the first // spectrometer.
+
+		for (int i = 0; i < numberOfPixels; i++) {
+			wavelengthsList.add(wavelengths[i]);
+			spectralDataList.add(spectralData[i]);
+		}
+
+		SpectraPlotValues.setRawPlot(wavelengthsList, spectralDataList);
+		//JSONupdater.setJSONState(true);
 	}
 }

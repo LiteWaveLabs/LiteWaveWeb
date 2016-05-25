@@ -2,24 +2,73 @@
 <script src="/static/js/highcharts.js"></script>
 <script src="/static/js/exporting.js"></script>
 
+<div class="container">
+
 <?=$availibility?>
+
+</div>
 
 <form method='POST'>
 <div class="container">
 <div class="jumbotron">
   <h1>Auswertung</h1>
-  <table class="table"><tr>
-  <td>Suchoffset:</td><td><input type="number" step="1" name="offset"  value="400"/></td></tr>
+  <table class="table" style='width: 100%'>
   <tr>
-  <td>Max. Offset:</td><td><input type="number" step="0.01" name="maxoffset"  value="0.3"/></td></tr>
-   <tr>
-  <td>Elemente pro Peak:</td><td><input type="number" step="1" name="elepeak"  value="3"/></td></tr>
+  <td style='width: 35%;'>Suchschwelle:</td><td><input type="number" step="1" name="offset"  value="400"/></td>
+  </tr>
+  <tr>
+  <td style='width: 35%;'>Max. Abweichung in nm:</td><td><input type="number" step="0.01" name="maxoffset"  value="0.4"/></td>
+  </tr>
+  <tr>
+  <td style='width: 35%;'>Elemente pro Peak:</td><td><input type="number" step="1" name="elepeak"  value="5"/></td>
+  </tr>
   
   <tr>
-  <td>Sortierung:</td><td><label class="radio-inline"><input type="radio" name="optradio" value="1" checked="1">Rel. Intensität</label> <label class="radio-inline"><input type="radio" value="2" name="optradio">Wahrscheinlichtkeit</label></td></tr>
+  <td style='width: 35%;'>Sortierung:</td>
+  <td>
+  <label class="radio-inline"><input type="radio" name="optradio" value="1" checked="1">Rel. Intensität</label> 
+  <label class="radio-inline"><input type="radio" value="2" name="optradio">Wahrscheinlichtkeit</label>
+  <label class="radio-inline"><input type="radio" class="send-now" name="optradio" value="3">Intelligent</label>
+  </td>
+  </tr>
+ 
+  
 
 </table>
-  <p><input type="submit" class="btn btn-primary btn-lg" href="/stats" role="button" value="Auswerten"></p>
+ <div class="collapse send-now">
+<table class="table" style='width: 100%'>
+  <tr><td style='width: 35%;'>
+  <h4>Intelligente Sortierung</h4>
+  </td>
+  <td>
+  Die Sortierung der Elemente kann sowohl nach Messgenauigkeit, als auch nach Wahrscheinlichkeit erfolgen.<br>
+  <br>
+  ORDER BY  (maxOffset - abs(databaseWavelength - measuredWavelength)) * (intensity ^ coefficient)
+  
+  </td></tr>
+  <tr>
+  <td style='width: 35%;'>
+ 
+        Koeffizient:
+   </td>
+   
+     <td>
+       <input type="number" step="0.01" name="coefficient"  value="1"/>
+   </td>
+  </tr>
+</table>
+</div>
+
+<script>
+$('input[type=radio]').on('change', function () {
+    if (!this.checked) return
+    $('.collapse').not($('div.' + $(this).attr('class'))).slideUp();
+    $('.collapse.' + $(this).attr('class')).slideDown();
+});
+</script>
+
+
+<p><input type="submit" class="btn btn-primary btn-lg" href="/stats" role="button" value="Auswerten">   <input type="submit" class="btn btn-primary btn-lg" name="save" role="button" value="CSV speichern"></p>
 </div>
 </div>
 </form>

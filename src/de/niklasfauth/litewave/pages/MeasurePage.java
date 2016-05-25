@@ -17,14 +17,16 @@ import de.niklasfauth.litewave.measure.CSVParser;
 import de.niklasfauth.litewave.measure.Measure;
 import de.niklasfauth.litewave.objects.SpectraPlotValues;
 import de.niklasfauth.litewave.objects.SpectrometerSettings;
+import de.niklasfauth.litewave.utils.JSONupdater;
+import de.niklasfauth.litewave.utils.QueueSharer;
 
 public class MeasurePage extends Page {
 	// private Availibility availStat = new Availibility();
-	// private Spectra rawSpectra = new Spectra();
+	// private ElementSpectra rawSpectra = new ElementSpectra();
 	private APIAvailibility apiStat = new APIAvailibility();
 
 	public MeasurePage() throws IOException {
-		super("Statistiken");
+		super("Messung");
 		try {
 			CSVParser.parse();
 		} catch (IOException e) {
@@ -45,33 +47,46 @@ public class MeasurePage extends Page {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp,
 			Map<String, Object> vars) throws IOException {
+
 		int measureTime = Math.round(Float.parseFloat(req
 				.getParameter("expose")) * 1000000);
 		int avgct = Integer.parseInt(req.getParameter("avgct"));
+
+		int volts = Integer.parseInt(req.getParameter("volt"));
 
 		if (avgct == 1337) {
 			resp.sendRedirect("/1337");
 			return;
 		}
 
-		SpectrometerSettings.setSpectrometerSettings(avgct, measureTime);
+		if (volts < 450) {
+			SpectrometerSettings.setSpectrometerSettings(avgct, measureTime);
 
-		int timeout = (((measureTime / 1000000) * avgct) * 3) + 10;
+			int timeout = (((measureTime / 1000000) * avgct) * 3) + 10;
 
-		System.out.println("Timeout: " + timeout);
-		ExecutorService executor = Executors.newSingleThreadExecutor();
-		try {
-			executor.submit(new Measure()).get(timeout, TimeUnit.SECONDS);
-			resp.sendRedirect("/stats");
-		} catch (InterruptedException | ExecutionException | TimeoutException e1) {
-			resp.getWriter().print("Fehler: Timeout");
-			e1.printStackTrace();
-		} // Timeout of 10 minutes.
-		executor.shutdown();
+			System.out.println("Timeout: " + timeout);
+			ChargePage.setTimeout(timeout);
 
-		SpectraPlotValues.setPeakList("");
-		SpectraPlotValues.setPeakPlot("[]");
-		SpectraPlotValues.setResultString("");
+			JSONupdater.setJSONState(false);
+
+			Thread measure = new Thread(new Measure());
+			measure.start();
+
+			SpectraPlotValues.setPeakList("");
+			SpectraPlotValues.setPeakPlot("[]");
+			SpectraPlotValues.setResultString("");
+
+			JSONupdater.setJSONError(255);
+			try {
+				QueueSharer.getQueue().put("c+" + volts);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			resp.sendRedirect("/charge");
+		}
+
 	}
 
 	@Override

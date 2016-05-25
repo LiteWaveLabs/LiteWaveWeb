@@ -14,6 +14,7 @@ public class SpectraPlotValues implements Serializable {
 	private static float maxOffset;
 	private static float perPeak;
 	private static float orderBy;
+	private static float coefficient;
 	
 	private static String resultString = "";
 
@@ -33,7 +34,7 @@ public class SpectraPlotValues implements Serializable {
 		this.rawValues = rawValues;
 	}
 
-	public static LinkedList getWavelength() {
+	public static LinkedList<Double> getWavelength() {
 		return wavelength;
 	}
 
@@ -49,11 +50,12 @@ public class SpectraPlotValues implements Serializable {
 	}
 
 	public static float[] getConfig() {
-		float config[] = { 0, 0, 0, 0 };
+		float config[] = { 0, 0, 0, 0, 0 };
 		config[0] = offset;
 		config[1] = maxOffset;
 		config[2] = perPeak;
 		config[3] = orderBy;
+		config[4] = coefficient;
 		return config;
 	}
 
@@ -73,11 +75,12 @@ public class SpectraPlotValues implements Serializable {
 	}
 
 	public static void setConfig(float offsetIn, float maxOffsetIn,
-			float perPeakIn, float i) {
+			float perPeakIn, float i, float f) {
 		offset = offsetIn;
 		perPeak = perPeakIn;
 		maxOffset = maxOffsetIn;
 		orderBy = i;
+		coefficient = f;
 	}
 
 	public static void setResultString(String string) {

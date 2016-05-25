@@ -1,0 +1,48 @@
+<div class="container">
+
+
+
+<div class="container">
+<div class="jumbotron">
+
+<div class="paragraphs">
+  <div class="row">
+    <div class="span4">
+      <div class="content-heading"><h3>Kondensator wird geladen...</h3><br><h3 id="cap"></h3></div>
+    </div>
+     <video width: 100% height: auto  autoplay>
+  <source src="/static/img/rick.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video> 
+    
+  </div>
+</div>
+<script>
+        $(document).ready(function() {
+            setInterval(function(){
+                $.ajax({
+                    url: "status",
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        $('#cap').html(json.cap + "V");
+                        if (json.error == 0) {
+                        	alert("Deckel nicht geschlossen!");
+                        	window.location = "/settings"
+                        	}
+                        if (json.state) {
+                        	setTimeout(function(){
+                        		window.location = "/stats"
+                        	}, 2000);
+                        }
+                    }
+                });
+            },100);
+        });
+    </script>
+
+</div>
+</div>
+</div>
+
+<hr/>

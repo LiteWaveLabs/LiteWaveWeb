@@ -7,12 +7,15 @@
 <div class="jumbotron">
   <h1>Messparameter</h1>
   <table class="table"><tr>
-  <td>Belichtungszeit in s:</td><td><input type="number" step="0.001" name="expose" value="1"/></td></tr>
+  <td>Belichtungszeit in s:</td><td><input type="number" step="0.001" name="expose" value="0.1"/></td></tr>
   <tr>
-  <td>Anzahl Messungen:</td><td><input type="number" step="1" name="avgct" value="3"/></td></tr>
+  <td>Anzahl Messungen:</td><td><input type="number" step="1" name="avgct" value="1"/></td></tr>
+  <tr>
+  <td>Zündspannung in Volt:</td><td><input type="number" step="1" name="volt" value="380" max="450"/></td></tr>
 
 </table>
   <p><input type="submit" class="btn btn-primary btn-lg" href="/stats" role="button" value="Messung starten"></p>
+
 </div>
 </div>
 </form>

@@ -1,0 +1,82 @@
+<div id="apiavail" style="min-width: 310px; height: 400px; max-width: 100%; margin: 0 auto"></div>
+
+<script>
+$(function () {
+    $('#apiavail').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Relative Verteilung'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Ausbau',
+            colorByPoint: true,
+            data: [
+            	<?=$!conclist?>
+               ]
+        }]
+    });
+});
+</script>
+
+<div id="gesavail" style="min-width: 310px; height: 400px; max-width: 100%; margin: 0 auto"></div>
+
+<script>
+$(function () {
+    $('#gesavail').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Absolute Verteilung'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Ausbau',
+            colorByPoint: true,
+            data: [
+            	<?=$!conclist?>
+            	{name: 'Unbekannt / Wasser', y: <?=$gesamt?>, sliced: true, color: '#bbbbbb'}
+               ]
+        }]
+    });
+});
+</script>

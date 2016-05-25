@@ -1,0 +1,66 @@
+<div class="container">
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+<div class="container">
+
+<?=$availibility?>
+
+</div>
+
+<form method='POST'>
+<div class="container">
+<div class="jumbotron">
+  <h1>Auswertung</h1>
+  <table class="table" style='width: 100%'>
+  
+  <tr><td style='width: 35%;'>
+  <h4>Auswahl der Elemente</h4>
+  </td>
+  <td>
+  Hier können vermutete Elemente gesucht werden, z.B. Fe oder Na; Mg; Al
+  </td></tr>
+  
+  <tr>
+  <td style='width: 35%;'>Elemente:</td><td><input type="text" value="Na; Li; Mg; Ca" name="searchfor"/>   <div class="text-danger">  <?=$error?></div></td> 
+  </tr>
+  <tr>
+  <td style='width: 35%;'>Anzahl Peaks / Element:</td><td><input type="number" step="1" name="numele"  value="3"/></td>
+  </tr>
+  <tr>
+  <td style='width: 35%;'>Referenz (default H I):</td><td><input type="number" step="0.01" name="ref"  value="656.60"/></td>
+  </tr>
+  <tr>
+  <td style='width: 35%;'>Offset:</td><td><input type="number" step="1" name="offset"  value="2000"/></td>
+  </tr>
+  <tr>
+  <td style='width: 35%;'>Skalierung:</td><td><input type="number" step="0.01" name="scale"  value="0.1"/></td>
+  </tr>
+
+ 
+  
+
+</table>
+
+ 
+<script>
+$('input[type=radio]').on('change', function () {
+    if (!this.checked) return
+    $('.collapse').not($('div.' + $(this).attr('class'))).slideUp();
+    $('.collapse.' + $(this).attr('class')).slideDown();
+});
+</script>
+
+
+<p><input type="submit" class="btn btn-primary btn-lg" href="/stats" role="button" value="Auswerten"></p>
+</div>
+</div>
+</form>
+
+<div class="container">
+<div class="jumbotron">
+<?=$concpie?>
+</div>
+</div>
+</div>
+<hr/>
+<p class="grey">Mit Liebe gemacht <3</p>
